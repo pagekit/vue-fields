@@ -1,8 +1,7 @@
 {
-  "name": "vue-form",
-  "version": "0.3.12",
-  "description": "A form generator for Vue.js",
-  "main": "dist/vue-form.common.js",
+  "name": "vue-fields",
+  "version": "0.1",
+  "description": "A form fields generator for Vue.js",
   "keywords": [
     "vue",
     "vuejs",
@@ -10,10 +9,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "test": "jest",
-    "build": "node ./build.js",
-    "eslint": "./node_modules/.bin/eslint . --ext .js,.vue",
-    "eslint-fix": "./node_modules/.bin/eslint . --ext .js,.vue --fix"
+    "build": "node ./build.js"
   },
   "devDependencies": {
     "babel-jest": "^22.0.3",

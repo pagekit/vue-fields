@@ -1,6 +1,6 @@
 {
   "name": "vue-fields",
-  "version": "0.1",
+  "version": "1.0.0",
   "description": "A form fields generator for Vue.js",
   "keywords": [
     "vue",

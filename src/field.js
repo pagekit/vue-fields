@@ -1,8 +1,6 @@
-import { each, warn, assign, isObject, isUndefined} from './util';
+import {each, warn, assign, isObject, isUndefined} from './util';
 
 export default {
-
-    name: 'field',
 
     props: ['field'],
 

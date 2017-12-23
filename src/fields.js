@@ -1,39 +1,11 @@
-import template from './components/default.html';
-import {get, set, each, warn, assign, evaluate, isArray, isString} from './util';
-import FieldText from './components/field-text.vue';
-import FieldTextarea from './components/field-textarea.vue';
-import FieldRadio from './components/field-radio.vue';
-import FieldCheckbox from './components/field-checkbox.vue';
-import FieldSelect from './components/field-select.vue';
-import FieldRange from './components/field-range.vue';
-import FieldNumber from './components/field-number.vue';
+import Fields from './components/fields.vue';
+import {get, set, each, warn, assign, isArray, isString} from './util';
 
 export default function (Vue) {
 
     return {
 
-        name: 'fields',
-
-        props: {
-
-            config: {
-                type: [Array, Object],
-                default: () => []
-            },
-
-            values: {
-                type: Object
-            }
-
-        },
-
-        computed: {
-
-            fields() {
-                return this.filterFields(this.config);
-            }
-
-        },
+        extends: Fields,
 
         methods: {
 
@@ -84,41 +56,10 @@ export default function (Vue) {
                 });
 
                 return fields;
-            },
-
-            evaluate(expr, data) {
-
-                data = data || this.values;
-
-                if (isString(expr)) {
-
-                    var comp = new Vue({data});
-                    var result = evaluate(expr, comp);
-
-                    comp.$destroy();
-
-                    return result;
-                }
-
-                return expr.call(this, data, this);
             }
 
-        },
-
-        fields: {},
-
-        components: {
-            FieldText,
-            FieldTextarea,
-            FieldRadio,
-            FieldCheckbox,
-            FieldSelect,
-            FieldRange,
-            FieldNumber
-        },
-
-        template
+        }
 
     };
 
-};
+}

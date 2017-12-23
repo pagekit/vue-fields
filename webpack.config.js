@@ -3,7 +3,7 @@
 module.exports = (env, argv) => ({
 
     entry: {
-        'examples/form': './examples/form',
+        'examples/index': './examples/index',
     },
 
     output: {
@@ -16,7 +16,7 @@ module.exports = (env, argv) => ({
 
     resolve: {
         alias: {
-            'vue-form': __dirname + '/src'
+            'vue-fields': __dirname + '/src'
         }
     },
 
@@ -31,10 +31,6 @@ module.exports = (env, argv) => ({
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: 'buble-loader'
-            },
-            {
-                test: /\.html$/,
-                use: 'html-loader'
             }
         ]
     }

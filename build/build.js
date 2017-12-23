@@ -5,34 +5,33 @@ var rollup = require('rollup');
 var uglify = require('uglify-js');
 var vue = require('rollup-plugin-vue');
 var buble = require('rollup-plugin-buble');
-var string = require('rollup-plugin-string');
-var {version} = require('./package.json');
+var {name, version} = require('../package.json');
 var banner =
-    "/*!\n" +
-    " * vue-form v" + version + "\n" +
-    " * Released under the MIT License.\n" +
-    " */\n";
+    '/*!\n' +
+    ' * vue-form v' + version + '\n' +
+    ' * Released under the MIT License.\n' +
+    ' */\n';
 
 rollup.rollup({
     input: 'src/index.js',
-    plugins: [string({ include: 'src/**/*.html' }), buble(), vue()]
+    plugins: [vue(), buble()]
 })
 .then(bundle =>
     bundle.generate({
         format: 'umd',
         banner: banner,
-        name: 'VueForm'
-  }).then(({code}) => write('dist/vue-form.js', code, bundle))
+        name: 'VueFields'
+    }).then(({code}) => write(`dist/${name}.js`, code, bundle))
 )
 .then(bundle =>
-    write('dist/vue-form.min.js', banner + '\n' +
-    uglify.minify(read('dist/vue-form.js')).code, bundle)
+    write(`dist/${name}.min.js`, banner + '\n' +
+    uglify.minify(read(`dist/${name}.js`)).code, bundle)
 )
 .then(bundle =>
     bundle.generate({
         format: 'cjs',
         banner: banner
-  }).then(({code}) => write('dist/vue-form.common.js', code, bundle))
+    }).then(({code}) => write(`dist/${name}.common.js`, code, bundle))
 )
 .catch(logError);
 

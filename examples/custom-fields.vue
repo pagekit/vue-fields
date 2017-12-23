@@ -1,7 +1,7 @@
 <template>
 
     <div>
-        <div class="form-group" v-for="field in fields">
+        <div class="form-group" v-for="field in fields" :key="field.name">
             <label v-if="field.type != 'checkbox'">{{ field.label }}</label>
             <component class="form-control" :is="'field-'+field.type" :field="field"/>
         </div>

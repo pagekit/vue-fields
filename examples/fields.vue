@@ -2,18 +2,18 @@
 
     <div class="container">
 
-        <h1>Form</h1>
+        <h1>Fields</h1>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><h2 class="panel-title">Regular Fields</h2></div>
+                    <div class="panel-heading"><h2 class="panel-title">Default</h2></div>
                     <fields class="panel-body" :config="fields" :values="values" @update="update"/>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><h2 class="panel-title">Custom Fields</h2></div>
+                    <div class="panel-heading"><h2 class="panel-title">Custom</h2></div>
                     <custom-fields class="panel-body" :config="fields" :values="values" @update="update"/>
                 </div>
             </div>

@@ -14,9 +14,6 @@ function plugin(Vue) {
     Util(Vue);
 
     Vue.component('fields', Fields(Vue));
-
-    Vue.config.optionMergeStrategies.fields = Vue.config.optionMergeStrategies.props;
-
 }
 
 if (typeof window !== 'undefined' && window.Vue) {

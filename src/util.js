@@ -2,13 +2,12 @@
  * Utility functions.
  */
 
-var debug = false, util = {}, _set;
+var debug = false, _set;
 
 export const isArray = Array.isArray;
 
 export default function (Vue) {
     _set = Vue.set;
-    util = Vue.util;
     debug = Vue.config.debug || !Vue.config.silent;
 }
 
@@ -28,34 +27,6 @@ export function isObject(obj) {
 
 export function isUndefined(val) {
     return typeof val === 'undefined';
-}
-
-export function on(el, event, cb, useCapture) {
-    el.addEventListener(event, cb, useCapture);
-}
-
-export function off(el, event, cb, useCapture) {
-    el.removeEventListener(event, cb, useCapture);
-}
-
-export function attr(el, attr) {
-    return el ? el.getAttribute(attr) : null;
-}
-
-export function trigger(el, event) {
-
-    var e = document.createEvent('HTMLEvents');
-
-    e.initEvent(event, true, false);
-    el.dispatchEvent(e);
-}
-
-export function camelize(str) {
-    return util.camelize(str);
-}
-
-export function pull(arr, value) {
-    arr.splice(arr.indexOf(value), 1);
 }
 
 export function get(obj, key, def) {

@@ -7,11 +7,10 @@
 <script>
 
     import Field from '../field';
-    import Vue from 'vue';
 
     export default {
 
-        extends: Vue.extend(Field)
+        extends: Field
 
     };
 

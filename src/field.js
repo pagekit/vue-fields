@@ -57,6 +57,10 @@ export default {
             },
 
             cache: false
+        },
+
+        filteredOptions() {
+            return this.filterOptions(this.options);
         }
 
     },
@@ -81,14 +85,6 @@ export default {
             });
 
             return opts;
-        }
-
-    },
-
-    filters: {
-
-        options(options) {
-            return this.filterOptions(options);
         }
 
     }

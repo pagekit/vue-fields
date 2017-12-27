@@ -6,7 +6,7 @@ The form fields generator for [Vue.js](http://vuejs.org).
 
 - Supports latest Firefox, Chrome, Safari, Opera and IE9+
 - Supports Vue 1.0 & Vue 2.0
-- Compact size 6KB
+- Compact size 6KB (2KB gzipped)
 
 ## Installation
 You can install it via [yarn](https://yarnpkg.com/) or [NPM](http://npmjs.org/).

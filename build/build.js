@@ -1,6 +1,7 @@
 /* eslint-env node */
 
 var fs = require('fs');
+var zlib = require('zlib');
 var rollup = require('rollup');
 var uglify = require('uglify-js');
 var vue = require('rollup-plugin-vue');
@@ -26,7 +27,7 @@ rollup.rollup({
 )
 .then(bundle =>
     write(`dist/${name}.min.js`, banner + '\n' +
-    uglify.minify(read(`dist/${name}.js`)).code, bundle)
+    uglify.minify(read(`dist/${name}.js`)).code, bundle, true)
 )
 .then(bundle =>
     bundle.generate({
@@ -47,11 +48,20 @@ function read(path) {
     return fs.readFileSync(path, 'utf8');
 }
 
-function write(dest, code, bundle) {
+function write(dest, code, bundle, zip) {
     return new Promise((resolve, reject) => {
         fs.writeFile(dest, code, err => {
             if (err) return reject(err);
-            console.log(blue(dest) + ' ' + getSize(code));
+
+            if (zip) {
+                zlib.gzip(code, (err, zipped) => {
+                    if (err) return reject(err);
+                    console.log(blue(dest) + ' ' + getSize(code) + ' (' + getSize(zipped) + ' gzipped)');
+                });
+            } else {
+                console.log(blue(dest) + ' ' + getSize(code));
+            }
+
             resolve(bundle);
         });
     });

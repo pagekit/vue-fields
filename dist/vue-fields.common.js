@@ -1,5 +1,6 @@
 /*!
- * vue-form v1.0.0
+ * vue-fields v1.0.0
+ * https://github.com/pagekit/vue-fields
  * Released under the MIT License.
  */
 
@@ -117,13 +118,27 @@ var assign = Object.assign || function (target) {
 
 var Field = {
 
-    props: ['field'],
+    inject: ['fields'],
+
+    props: {
+
+        field: {
+            type: Object,
+            required: true
+        },
+
+        values: {
+            type: Object,
+            required: true
+        }
+
+    },
 
     data: function data() {
         return assign({
             name: '',
-            type: 'text',
             label: '',
+            attrs: {},
             options: [],
             default: undefined
         }, this.field);
@@ -131,47 +146,37 @@ var Field = {
 
     computed: {
 
-        attrs: {
-
-            get: function get$$1() {
-
-                if (this.enable && !this.$parent.evaluate(this.enable)) {
-                    return assign({disabled: 'true'}, this.$data);
-                }
-
-                return this.$data;
-            },
-
-            cache: false
-        },
-
         value: {
 
-            get: function get$$1() {
-
-                var value = this.$parent.getField(this);
-
-                if (isUndefined(value) && !isUndefined(this.default)) {
-
-                    value = this.default;
-
-                    if (value) {
-                        this.$parent.setField(this, value);
-                    }
-                }
-
-                return value;
+            get: function get$1() {
+                return get(this.values, this.name);
             },
 
             set: function set$$1(value) {
+                this.$emit('change', this, value);
+            }
 
-                if (!isUndefined(this.value) || value) {
-                    this.$parent.setField(this, value, this.value);
+        },
+
+        attributes: {
+
+            get: function get$$1() {
+
+                if (this.enable && !this.fields.evaluate(this.enable)) {
+                    return assign({disabled: 'true'}, this.attrs);
                 }
 
-            },
+                return this.attrs;
+            }
 
-            cache: false
+        },
+
+    },
+
+    created: function created() {
+
+        if (isUndefined(this.value)) {
+            this.value = this.default;
         }
 
     },
@@ -200,61 +205,53 @@ var Field = {
             return opts;
         }
 
-    },
-
-    filters: {
-
-        options: function options(options$1) {
-            return this.filterOptions(options$1);
-        }
-
     }
 
 };
 
-var FieldText = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],attrs:{"type":"text"},domProps:{"value":(_vm.value)},on:{"input":function($event){if($event.target.composing){ return; }_vm.value=$event.target.value;}}},'input',_vm.attrs,false))},staticRenderFns: [],
+var FieldText = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],attrs:{"type":"text"},domProps:{"value":(_vm.value)},on:{"input":function($event){if($event.target.composing){ return; }_vm.value=$event.target.value;}}},'input',_vm.attributes,false))},staticRenderFns: [],
 
     extends: Field
 
 };
 
-var FieldTextarea = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('textarea',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],domProps:{"value":(_vm.value)},on:{"input":function($event){if($event.target.composing){ return; }_vm.value=$event.target.value;}}},'textarea',_vm.attrs,false))},staticRenderFns: [],
+var FieldTextarea = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('textarea',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],domProps:{"value":(_vm.value)},on:{"input":function($event){if($event.target.composing){ return; }_vm.value=$event.target.value;}}},'textarea',_vm.attributes,false))},staticRenderFns: [],
 
     extends: Field
 
 };
 
-var FieldRadio = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._l((_vm.options | _vm.options),function(option){return [_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],attrs:{"type":"radio","name":_vm.name},domProps:{"value":option.value,"checked":_vm._q(_vm.value,option.value)},on:{"change":function($event){_vm.value=option.value;}}},'input',_vm.attrs,false)),_vm._v(" "),_c('label',[_vm._v(_vm._s(option.text))])]})],2)},staticRenderFns: [],
+var FieldRadio = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._l((_vm.filterOptions(_vm.options)),function(option){return [_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],attrs:{"type":"radio","name":_vm.name},domProps:{"value":option.value,"checked":_vm._q(_vm.value,option.value)},on:{"change":function($event){_vm.value=option.value;}}},'input',_vm.attributes,false)),_vm._v(" "),_c('label',[_vm._v(_vm._s(option.text))])]})],2)},staticRenderFns: [],
 
     extends: Field
 
 };
 
-var FieldCheckbox = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.value)?_vm._i(_vm.value,null)>-1:(_vm.value)},on:{"change":function($event){var $$a=_vm.value,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.value=$$a.concat([$$v]));}else{$$i>-1&&(_vm.value=$$a.slice(0,$$i).concat($$a.slice($$i+1)));}}else{_vm.value=$$c;}}}},'input',_vm.attrs,false))},staticRenderFns: [],
+var FieldCheckbox = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.value)?_vm._i(_vm.value,null)>-1:(_vm.value)},on:{"change":function($event){var $$a=_vm.value,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.value=$$a.concat([$$v]));}else{$$i>-1&&(_vm.value=$$a.slice(0,$$i).concat($$a.slice($$i+1)));}}else{_vm.value=$$c;}}}},'input',_vm.attributes,false))},staticRenderFns: [],
 
     extends: Field
 
 };
 
-var FieldSelect = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('select',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.value=$event.target.multiple ? $$selectedVal : $$selectedVal[0];}}},'select',_vm.attrs,false),[_vm._l((_vm.options | _vm.options),function(option){return [(option.label)?_c('optgroup',{attrs:{"label":option.label}},_vm._l((option.options),function(opt){return _c('option',{domProps:{"value":opt.value}},[_vm._v(_vm._s(opt.text))])})):_c('option',{domProps:{"value":option.value}},[_vm._v(_vm._s(option.text))])]})],2)},staticRenderFns: [],
+var FieldSelect = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('select',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.value=$event.target.multiple ? $$selectedVal : $$selectedVal[0];}}},'select',_vm.attributes,false),[_vm._l((_vm.filterOptions(_vm.options)),function(option){return [(option.label)?_c('optgroup',{attrs:{"label":option.label}},_vm._l((option.options),function(opt){return _c('option',{domProps:{"value":opt.value}},[_vm._v(_vm._s(opt.text))])})):_c('option',{domProps:{"value":option.value}},[_vm._v(_vm._s(option.text))])]})],2)},staticRenderFns: [],
 
     extends: Field
 
 };
 
-var FieldRange = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],attrs:{"type":"range"},domProps:{"value":(_vm.value)},on:{"__r":function($event){_vm.value=$event.target.value;}}},'input',_vm.attrs,false))},staticRenderFns: [],
+var FieldRange = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],attrs:{"type":"range"},domProps:{"value":(_vm.value)},on:{"__r":function($event){_vm.value=$event.target.value;}}},'input',_vm.attributes,false))},staticRenderFns: [],
 
     extends: Field
 
 };
 
-var FieldNumber = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],attrs:{"type":"number"},domProps:{"value":(_vm.value)},on:{"input":function($event){if($event.target.composing){ return; }_vm.value=$event.target.value;}}},'input',_vm.attrs,false))},staticRenderFns: [],
+var FieldNumber = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],attrs:{"type":"number"},domProps:{"value":(_vm.value)},on:{"input":function($event){if($event.target.composing){ return; }_vm.value=$event.target.value;}}},'input',_vm.attributes,false))},staticRenderFns: [],
 
     extends: Field
 
 };
 
-var Fields$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',_vm._l((_vm.fields),function(field){return _c('div',{key:field.name,staticClass:"form-group"},[(field.type != 'checkbox')?_c('label',[_vm._v(_vm._s(field.label))]):_vm._e(),_vm._v(" "),_c('field-'+field.type,{tag:"component",staticClass:"form-control",attrs:{"field":field}})],1)}))},staticRenderFns: [],
+var Fields = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',_vm._l((_vm.fields),function(field){return _c('div',{key:field.name},[(field.type != 'checkbox')?_c('label',[_vm._v(_vm._s(field.label))]):_vm._e(),_vm._v(" "),_c(field.component,{tag:"component",attrs:{"field":field,"values":_vm.values},on:{"change":_vm.change}})],1)}))},staticRenderFns: [],
 
     components: {
         FieldText: FieldText,
@@ -266,15 +263,27 @@ var Fields$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
         FieldNumber: FieldNumber
     },
 
+    provide: function provide() {
+        return {
+            fields: this
+        };
+    },
+
     props: {
 
         config: {
-            type: [Array, Object],
-            default: function () { return []; }
+            type: [Object, Array],
+            required: true
         },
 
         values: {
-            type: Object
+            type: Object,
+            default: function () {}
+        },
+
+        prefix: {
+            type: String,
+            default: 'field-'
         }
 
     },
@@ -282,12 +291,56 @@ var Fields$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
     computed: {
 
         fields: function fields() {
-            return this.filterFields(this.config);
+            var this$1 = this;
+
+
+            var arr = isArray(this.config), fields = [];
+
+            each(this.config, function (field, name) {
+
+                field = assign({}, field);
+
+                if (!field.name && !arr) {
+                    field.name = name;
+                }
+
+                if (field.name) {
+
+                    if (!field.type) {
+                        field.type = 'text';
+                    }
+
+                    if (!field.component) {
+                        field.component = this$1.prefix + field.type;
+                    }
+
+                    if (!field.show || this$1.evaluate(field.show)) {
+                        fields.push(field);
+                    }
+
+                } else {
+                    warn(("Field name missing " + (JSON.stringify(field))));
+                }
+
+            });
+
+            return fields;
         }
 
     },
 
     methods: {
+
+        change: function change(field, value) {
+
+            var prev = get(this.values, field.name);
+
+            set(this.values, field.name, value);
+
+            if (!isUndefined(value)) {
+                this.$emit('change', field, value, prev);
+            }
+        },
 
         evaluate: function evaluate$1(expr, data) {
 
@@ -308,71 +361,6 @@ function $match(subject, pattern, flags) {
     return subject && (new RegExp(pattern, flags).test(subject));
 }
 
-function Fields (Vue) {
-
-    return {
-
-        extends: Fields$1,
-
-        methods: {
-
-            getField: function getField(field) {
-
-                if (this.values instanceof Vue && 'getField' in this.values) {
-                    return this.values.getField(field);
-                }
-
-                return get(this.values, field.name);
-            },
-
-            setField: function setField(field, value, prev) {
-
-                if (this.values instanceof Vue && 'setField' in this.values) {
-                    this.values.setField(field, value, prev);
-                } else {
-                    set(this.values, field.name, value);
-                }
-
-                this.$emit('update', field, value, prev);
-            },
-
-            filterFields: function filterFields(config) {
-                var this$1 = this;
-
-
-                var arr = isArray(config), fields = [];
-
-                each(config, function (field, name) {
-
-                    if (!isString(field.name) && !arr) {
-                        field = assign({name: name}, field);
-                    }
-
-                    if (!isString(field.type)) {
-                        field = assign({type: 'text'}, field);
-                    }
-
-                    if (isString(field.name)) {
-
-                        if (!field.show || this$1.evaluate(field.show)) {
-                            fields.push(field);
-                        }
-
-                    } else {
-                        warn(("Field name missing " + (JSON.stringify(field))));
-                    }
-
-                });
-
-                return fields;
-            }
-
-        }
-
-    };
-
-}
-
 /**
  * Install plugin.
  */
@@ -385,8 +373,12 @@ function plugin(Vue) {
 
     Util(Vue);
 
-    Vue.component('fields', Fields(Vue));
+    Vue.component('field', Field);
+    Vue.component('fields', Fields);
 }
+
+plugin.Field = Field;
+plugin.Fields = Fields;
 
 if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.use(plugin);

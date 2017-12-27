@@ -31,7 +31,8 @@ rollup.rollup({
 .then(bundle =>
     bundle.generate({
         format: 'es',
-        banner: banner
+        banner: banner,
+        footer: 'export {Field, Fields};'
     }).then(({code}) => write(`dist/${name}.esm.js`, code, bundle))
 )
 .then(bundle =>

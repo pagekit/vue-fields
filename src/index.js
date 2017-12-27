@@ -18,6 +18,9 @@ export default function plugin(Vue) {
     Vue.component('fields', Fields);
 }
 
+plugin.Field = Field;
+plugin.Fields = Fields;
+
 if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.use(plugin);
 }

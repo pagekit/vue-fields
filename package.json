@@ -1,7 +1,7 @@
 {
     "name": "vue-fields",
     "version": "1.0.0",
-    "description": "A form fields generator for Vue.js",
+    "description": "The form fields generator for Vue.js",
     "homepage": "https://github.com/pagekit/vue-fields",
     "main": "dist/vue-fields.common.js",
     "module": "dist/vue-fields.esm.js",

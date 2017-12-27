@@ -5,10 +5,11 @@ var rollup = require('rollup');
 var uglify = require('uglify-js');
 var vue = require('rollup-plugin-vue');
 var buble = require('rollup-plugin-buble');
-var {name, version} = require('../package.json');
+var {name, version, homepage} = require('../package.json');
 var banner =
     '/*!\n' +
-    ' * vue-form v' + version + '\n' +
+    ' * ' + name + ' v' + version + '\n' +
+    ' * ' + homepage + '\n' +
     ' * Released under the MIT License.\n' +
     ' */\n';
 
@@ -26,6 +27,12 @@ rollup.rollup({
 .then(bundle =>
     write(`dist/${name}.min.js`, banner + '\n' +
     uglify.minify(read(`dist/${name}.js`)).code, bundle)
+)
+.then(bundle =>
+    bundle.generate({
+        format: 'es',
+        banner: banner
+    }).then(({code}) => write(`dist/${name}.esm.js`, code, bundle))
 )
 .then(bundle =>
     bundle.generate({

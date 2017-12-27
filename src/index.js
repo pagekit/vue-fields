@@ -3,9 +3,10 @@
  */
 
 import Util from './util';
-import Fields from './fields';
+import Field from './field';
+import Fields from './components/fields.vue';
 
-function plugin(Vue) {
+export default function plugin(Vue) {
 
     if (plugin.installed) {
         return;
@@ -13,11 +14,10 @@ function plugin(Vue) {
 
     Util(Vue);
 
-    Vue.component('fields', Fields(Vue));
+    Vue.component('field', Field);
+    Vue.component('fields', Fields);
 }
 
 if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.use(plugin);
 }
-
-export default plugin;

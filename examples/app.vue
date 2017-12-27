@@ -8,19 +8,19 @@
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h2 class="panel-title">Default</h2></div>
-                    <fields class="panel-body" :config="fields" :values="values" @update="update"/>
+                    <fields-custom class="panel-body" :config="fields" :values="values" @change="change"/>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h2 class="panel-title">Custom</h2></div>
-                    <custom-fields class="panel-body" :config="fields" :values="values" @update="update"/>
+                    <fields-custom class="panel-body" :config="fields" :values="values" @change="change"/>
                 </div>
             </div>
         </div>
 
         <pre>{{ values | json }}</pre>
-        <pre>{{ updated }}</pre>
+        <pre>{{ changed }}</pre>
 
     </div>
 
@@ -28,12 +28,12 @@
 
 <script>
 
-    import customFields from './custom-fields.vue';
+    import fieldsCustom from './fields-custom.vue';
 
     export default {
 
         components: {
-            customFields
+            fieldsCustom
         },
 
         filters: {
@@ -49,8 +49,7 @@
             fields: {
 
                 text: {
-                    label: 'Text',
-                    type: 'text'
+                    label: 'Text'
                 },
 
                 textarea: {
@@ -87,7 +86,7 @@
                 _show: {
                     label: 'Show/Hide',
                     type: 'text',
-                    show: 'show'
+                    show: 'show == true'
                 },
 
                 enable: {
@@ -109,14 +108,15 @@
             },
 
             values: {},
-            updated: ''
+
+            changed: ''
 
         }),
 
         methods: {
 
-            update(field, value, prev) {
-                this.updated = '@update >> ' + field.name + ': ' + JSON.stringify(value);
+            change(field, value, prev) {
+                this.changed = '@change >> ' + field.name + ': ' + JSON.stringify(value) + ' (' + JSON.stringify(prev) + ')';
             }
 
         }

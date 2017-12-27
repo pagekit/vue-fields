@@ -1,9 +1,9 @@
 <template>
 
     <div>
-        <div class="form-group" v-for="field in fields" :key="field.name">
+        <div v-for="field in fields" :key="field.name">
             <label v-if="field.type != 'checkbox'">{{ field.label }}</label>
-            <component class="form-control" :is="'field-'+field.type" :field="field"/>
+            <component :is="field.component" :field="field" :values="values" @change="change"/>
         </div>
     </div>
 
@@ -18,7 +18,7 @@
     import FieldSelect from './field-select.vue';
     import FieldRange from './field-range.vue';
     import FieldNumber from './field-number.vue';
-    import {assign, evaluate, isString} from '../util';
+    import {get, set, each, warn, assign, evaluate, isArray, isString, isUndefined} from '../util';
 
     export default {
 
@@ -32,15 +32,27 @@
             FieldNumber
         },
 
+        provide() {
+            return {
+                fields: this
+            };
+        },
+
         props: {
 
             config: {
-                type: [Array, Object],
-                default: () => []
+                type: [Object, Array],
+                required: true
             },
 
             values: {
-                type: Object
+                type: Object,
+                default: () => {}
+            },
+
+            prefix: {
+                type: String,
+                default: 'field-'
             }
 
         },
@@ -48,12 +60,54 @@
         computed: {
 
             fields() {
-                return this.filterFields(this.config);
+
+                const arr = isArray(this.config), fields = [];
+
+                each(this.config, (field, name) => {
+
+                    field = assign({}, field);
+
+                    if (!field.name && !arr) {
+                        field.name = name;
+                    }
+
+                    if (field.name) {
+
+                        if (!field.type) {
+                            field.type = 'text';
+                        }
+
+                        if (!field.component) {
+                            field.component = this.prefix + field.type;
+                        }
+
+                        if (!field.show || this.evaluate(field.show)) {
+                            fields.push(field);
+                        }
+
+                    } else {
+                        warn(`Field name missing ${JSON.stringify(field)}`);
+                    }
+
+                });
+
+                return fields;
             }
 
         },
 
         methods: {
+
+            change(field, value) {
+
+                const prev = get(this.values, field.name);
+
+                set(this.values, field.name, value);
+
+                if (!isUndefined(value)) {
+                    this.$emit('change', field, value, prev);
+                }
+            },
 
             evaluate(expr, data) {
 

@@ -1,6 +1,6 @@
 <template>
 
-    <textarea v-bind="attrs" v-model="value"></textarea>
+    <textarea v-bind="attributes" v-model="value"></textarea>
 
 </template>
 

@@ -1,6 +1,6 @@
 <template>
 
-    <input type="checkbox" v-bind="attrs" v-model="value">
+    <input type="checkbox" v-bind="attributes" v-model="value">
 
 </template>
 

@@ -1,6 +1,6 @@
 <template>
 
-    <input type="text" v-bind="attrs" v-model="value">
+    <input type="text" v-bind="attributes" v-model="value">
 
 </template>
 

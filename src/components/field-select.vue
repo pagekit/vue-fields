@@ -1,7 +1,7 @@
 <template>
 
-    <select v-bind="attrs" v-model="value">
-        <template v-for="option in filteredOptions">
+    <select v-bind="attributes" v-model="value">
+        <template v-for="option in filterOptions(options)">
             <optgroup :label="option.label" v-if="option.label">
                 <option v-for="opt in option.options" :value="opt.value">{{ opt.text }}</option>
             </optgroup>

@@ -60,38 +60,7 @@
         computed: {
 
             fields() {
-
-                const arr = isArray(this.config), fields = [];
-
-                each(this.config, (field, name) => {
-
-                    field = assign({}, field);
-
-                    if (!field.name && !arr) {
-                        field.name = name;
-                    }
-
-                    if (field.name) {
-
-                        if (!field.type) {
-                            field.type = 'text';
-                        }
-
-                        if (!field.component) {
-                            field.component = this.prefix + field.type;
-                        }
-
-                        if (!field.show || this.evaluate(field.show)) {
-                            fields.push(field);
-                        }
-
-                    } else {
-                        warn(`Field name missing ${JSON.stringify(field)}`);
-                    }
-
-                });
-
-                return fields;
+                return this.prepare(this.config, this.prefix);
             }
 
         },
@@ -118,6 +87,43 @@
                 }
 
                 return expr.call(this, data, this);
+            },
+
+            prepare(config, prefix) {
+
+                const arr = isArray(config), fields = [];
+
+                prefix = prefix || this.prefix;
+
+                each(config, (field, name) => {
+
+                    field = assign({}, field);
+
+                    if (!field.name && !arr) {
+                        field.name = name;
+                    }
+
+                    if (field.name) {
+
+                        if (!field.type) {
+                            field.type = 'text';
+                        }
+
+                        if (!field.component) {
+                            field.component = prefix + field.type;
+                        }
+
+                        if (!field.show || this.evaluate(field.show)) {
+                            fields.push(field);
+                        }
+
+                    } else {
+                        warn(`Field name missing ${JSON.stringify(field)}`);
+                    }
+
+                });
+
+                return fields;
             }
 
         }

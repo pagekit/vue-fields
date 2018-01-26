@@ -76,22 +76,18 @@
                 }
             },
 
-            evaluate(expr, data) {
-
-                data = data || this.values;
+            evaluate(expr, values = this.values) {
 
                 if (isString(expr)) {
-                    return evaluate(expr, assign({$match}, data));
+                    return evaluate(expr, assign({$match}, values));
                 }
 
-                return expr.call(this, data, this);
+                return expr.call(this, values, this);
             },
 
-            prepare(config, prefix) {
+            prepare(config, prefix = this.prefix) {
 
                 const arr = isArray(config), fields = [];
-
-                prefix = prefix || this.prefix;
 
                 each(config, (field, name) => {
 

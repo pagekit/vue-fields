@@ -115,8 +115,8 @@
 
         methods: {
 
-            change(field, value, prev) {
-                this.changed = '@change >> ' + field.name + ': ' + JSON.stringify(value) + ' (' + JSON.stringify(prev) + ')';
+            change(value, field) {
+                this.changed = '@change >> ' + field.name + ': ' + JSON.stringify(value);
             }
 
         }

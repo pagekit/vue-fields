@@ -67,14 +67,12 @@
 
         methods: {
 
-            change(field, value) {
-
-                const prev = get(this.values, field.name);
+            change(value, field) {
 
                 set(this.values, field.name, value);
 
                 if (!isUndefined(value)) {
-                    this.$emit('change', field, value, prev);
+                    this.$emit('change', value, field);
                 }
             },
 

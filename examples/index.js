@@ -4,7 +4,7 @@ import Application from './app.vue';
 
 Vue.use(VueFields);
 
-new Vue({
+window.$app = new Vue({
 
     el: '#app',
 

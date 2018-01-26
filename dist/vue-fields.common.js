@@ -1,5 +1,5 @@
 /*!
- * vue-fields v1.0.1
+ * vue-fields v1.0.2
  * https://github.com/pagekit/vue-fields
  * Released under the MIT License.
  */
@@ -153,7 +153,7 @@ var Field = {
             },
 
             set: function set$$1(value) {
-                this.$emit('change', this, value);
+                this.$emit('change', value, this);
             }
 
         },
@@ -298,14 +298,12 @@ var Fields = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_
 
     methods: {
 
-        change: function change(field, value) {
-
-            var prev = get(this.values, field.name);
+        change: function change(value, field) {
 
             set(this.values, field.name, value);
 
             if (!isUndefined(value)) {
-                this.$emit('change', field, value, prev);
+                this.$emit('change', value, field);
             }
         },
 

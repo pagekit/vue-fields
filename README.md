@@ -15,6 +15,12 @@ $ yarn add vue-fields
 $ npm install vue-fields
 ```
 
+### CDN
+Available on [jsdelivr](https://cdn.jsdelivr.net/npm/vue-fields@1.0.2) or [unpkg](https://unpkg.com/vue-fields@1.0.2).
+```html
+<script src="https://cdn.jsdelivr.net/npm/vue-fields@1.0.2"></script>
+```
+
 ## Changelog
 
 Details changes for each release are documented in the [release notes](https://github.com/pagekit/vue-fields/releases).

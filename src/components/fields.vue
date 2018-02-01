@@ -18,7 +18,7 @@
     import FieldSelect from './field-select.vue';
     import FieldRange from './field-range.vue';
     import FieldNumber from './field-number.vue';
-    import {get, set, each, warn, assign, evaluate, isArray, isString, isUndefined} from '../util';
+    import {set, each, warn, assign, evaluate, isArray, isString, isUndefined} from '../util';
 
     export default {
 

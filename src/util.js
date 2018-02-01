@@ -2,7 +2,7 @@
  * Utility functions.
  */
 
-var debug = false, _set;
+let debug = false, _set;
 
 export const isArray = Array.isArray;
 
@@ -31,9 +31,9 @@ export function isUndefined(val) {
 
 export function get(obj, key, def) {
 
-    var parts = key.split('.'), i;
+    const parts = key.split('.');
 
-    for (i = 0; i < parts.length; i++) {
+    for (let i = 0; i < parts.length; i++) {
         if (!isUndefined(obj[parts[i]])) {
             obj = obj[parts[i]];
         } else {
@@ -46,11 +46,11 @@ export function get(obj, key, def) {
 
 export function set(obj, key, val) {
 
-    var parts = key.split('.'), part;
+    const parts = key.split('.');
 
     while (parts.length > 1) {
 
-        part = parts.shift();
+        const part = parts.shift();
 
         if (!isObject(obj[part]) || isArray(obj[part])) {
             _set(obj, part, {});
@@ -72,7 +72,7 @@ export function evaluate(expr, context) {
 
 export function each(obj, iterator) {
 
-    var i, key;
+    let i, key;
 
     if (typeof obj.length == 'number') {
         for (i = 0; i < obj.length; i++) {
@@ -91,11 +91,11 @@ export function each(obj, iterator) {
 
 export const assign = Object.assign || function (target) {
 
-    for (var i = 1; i < arguments.length; i++) {
+    for (let i = 1; i < arguments.length; i++) {
 
-        var source = arguments[i];
+        const source = arguments[i];
 
-        for (var key in source) {
+        for (const key in source) {
             if (Object.prototype.hasOwnProperty.call(source, key)) {
                 target[key] = source[key];
             }

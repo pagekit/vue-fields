@@ -1,13 +1,13 @@
 /* eslint-env node */
 
-var fs = require('fs');
-var zlib = require('zlib');
-var rollup = require('rollup');
-var uglify = require('uglify-js');
-var vue = require('rollup-plugin-vue');
-var buble = require('rollup-plugin-buble');
-var {name, version, homepage} = require('../package.json');
-var banner =
+const fs = require('fs');
+const zlib = require('zlib');
+const rollup = require('rollup');
+const uglify = require('uglify-js');
+const vue = require('rollup-plugin-vue');
+const buble = require('rollup-plugin-buble');
+const {name, version, homepage} = require('../package.json');
+const banner =
     '/*!\n' +
     ' * ' + name + ' v' + version + '\n' +
     ' * ' + homepage + '\n' +

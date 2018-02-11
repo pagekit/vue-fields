@@ -27,18 +27,18 @@
         "eslint-fix": "eslint . --ext .js,.vue --fix"
     },
     "devDependencies": {
-        "buble": "^0.18.0",
+        "buble": "^0.19.1",
         "buble-loader": "^0.4.1",
-        "eslint": "^4.16.0",
+        "eslint": "^4.17.0",
         "eslint-plugin-vue": "^4.2.0",
-        "replace-in-file": "^3.1.0",
-        "rollup": "^0.55.3",
-        "rollup-plugin-buble": "^0.18.0",
+        "replace-in-file": "^3.1.1",
+        "rollup": "^0.55.5",
+        "rollup-plugin-buble": "^0.19.1",
         "rollup-plugin-vue": "^3.0.0",
-        "uglify-js": "^3.3.8",
+        "uglify-js": "^3.3.10",
         "vue": "^2.5.13",
-        "vue-loader": "^14.0.3",
+        "vue-loader": "^14.1.1",
         "vue-template-compiler": "^2.5.13",
-        "webpack": "^3.10.0"
+        "webpack": "^3.11.0"
     }
 }

@@ -1,4 +1,4 @@
-# vue-fields [![Version](https://img.shields.io/npm/v/vue-fields.svg)](https://www.npmjs.com/package/vue-fields) [![License](https://img.shields.io/npm/l/vue-fields.svg)](https://www.npmjs.com/package/vue-fields) [![Downloads](https://img.shields.io/npm/dt/vue-fields.svg)](https://www.npmjs.com/package/vue-fields)
+# vue-fields [![Build](https://img.shields.io/circleci/project/pagekit/vue-fields/master.svg)](https://circleci.com/gh/pagekit/vue-fields) [![Downloads](https://img.shields.io/npm/dm/vue-fields.svg)](https://www.npmjs.com/package/vue-fields) [![Version](https://img.shields.io/npm/v/vue-fields.svg)](https://www.npmjs.com/package/vue-fields) [![License](https://img.shields.io/npm/l/vue-fields.svg)](https://www.npmjs.com/package/vue-fields)
 
 The form fields generator for [Vue.js](http://vuejs.org).
 

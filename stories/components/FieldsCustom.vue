@@ -1,9 +1,9 @@
 <template>
 
     <div>
-        <div class="form-group" v-for="field in fields" :key="field.name">
+        <div v-for="field in fields" :key="field.name" class="form-group">
             <label v-if="field.type != 'checkbox'">{{ field.label }}</label>
-            <component class="form-control" :is="field.component" :field="field" :values="values" @change="change"/>
+            <component :is="field.component" :field="field" :values="values" class="form-control" @change="change"/>
         </div>
     </div>
 

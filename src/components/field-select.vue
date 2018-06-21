@@ -1,11 +1,11 @@
 <template>
 
-    <select v-bind="attributes" v-model="value">
+    <select v-model="value" v-bind="attributes">
         <template v-for="option in filterOptions(options)">
-            <optgroup :label="option.label" v-if="option.label">
+            <optgroup v-if="option.label" :label="option.label">
                 <option v-for="opt in option.options" :value="opt.value">{{ opt.text }}</option>
             </optgroup>
-            <option :value="option.value" v-else>{{ option.text }}</option>
+            <option v-else :value="option.value">{{ option.text }}</option>
         </template>
     </select>
 

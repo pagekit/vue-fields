@@ -2,7 +2,7 @@
 
     <div>
         <template v-for="option in filterOptions(options)">
-            <input type="radio" v-bind="attributes" :name="name" :value="option.value" v-model="value"> <label>{{ option.text }}</label>
+            <input v-model="value" v-bind="attributes" :name="name" :value="option.value" type="radio"> <label>{{ option.text }}</label>
         </template>
     </div>
 

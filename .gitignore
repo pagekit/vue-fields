@@ -1,4 +1,4 @@
 /node_modules
-/examples/*.min.js
+yarn-error.log
 .DS_Store
 .idea

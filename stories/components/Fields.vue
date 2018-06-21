@@ -19,8 +19,7 @@
             </div>
         </div>
 
-        <pre>{{ values | json }}</pre>
-        <pre>{{ changed }}</pre>
+        <pre>{{ values }}</pre>
 
     </div>
 
@@ -28,19 +27,17 @@
 
 <script>
 
-    import fieldsCustom from './fields-custom.vue';
+    import FieldsCustom from './FieldsCustom.vue';
 
     export default {
 
         components: {
-            fieldsCustom
+            FieldsCustom
         },
 
-        filters: {
+        props: {
 
-            json(val) {
-                return JSON.stringify(val, null, 2);
-            }
+            action: Function,
 
         },
 
@@ -107,16 +104,14 @@
 
             },
 
-            values: {},
-
-            changed: ''
+            values: {}
 
         }),
 
         methods: {
 
             change(value, field) {
-                this.changed = '@change >> ' + field.name + ': ' + JSON.stringify(value);
+                this.action(`@change (${field.name})`)(value);
             }
 
         }
@@ -124,3 +119,9 @@
     };
 
 </script>
+
+<style>
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css');
+
+</style>

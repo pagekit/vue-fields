@@ -2,7 +2,7 @@ import {get, each, warn, assign, isObject, isUndefined} from './util';
 
 export default {
 
-    inject: ['fields'],
+    inject: ['Fields'],
 
     props: {
 
@@ -46,7 +46,7 @@ export default {
 
             get() {
 
-                if (this.enable && !this.fields.evaluate(this.enable)) {
+                if (this.enable && !this.Fields.evaluate(this.enable)) {
                     return assign({disabled: 'true'}, this.attrs);
                 }
 

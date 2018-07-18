@@ -33,16 +33,14 @@
         },
 
         provide() {
-            return {
-                fields: this
-            };
+            return {Fields: this};
         },
 
         props: {
 
             config: {
                 type: [Object, Array],
-                required: true
+                default: () => {}
             },
 
             values: {

@@ -1,5 +1,5 @@
 /*!
- * vue-fields v1.0.2
+ * vue-fields v1.0.3
  * https://github.com/pagekit/vue-fields
  * Released under the MIT License.
  */
@@ -8,8 +8,7 @@
  * Utility functions.
  */
 
-var debug = false;
-var _set;
+var debug = false, _set;
 
 var isArray = Array.isArray;
 
@@ -38,9 +37,9 @@ function isUndefined(val) {
 
 function get(obj, key, def) {
 
-    var parts = key.split('.'), i;
+    var parts = key.split('.');
 
-    for (i = 0; i < parts.length; i++) {
+    for (var i = 0; i < parts.length; i++) {
         if (!isUndefined(obj[parts[i]])) {
             obj = obj[parts[i]];
         } else {
@@ -53,11 +52,11 @@ function get(obj, key, def) {
 
 function set(obj, key, val) {
 
-    var parts = key.split('.'), part;
+    var parts = key.split('.');
 
     while (parts.length > 1) {
 
-        part = parts.shift();
+        var part = parts.shift();
 
         if (!isObject(obj[part]) || isArray(obj[part])) {
             _set(obj, part, {});
@@ -116,7 +115,7 @@ var assign = Object.assign || function (target) {
 
 var Field = {
 
-    inject: ['fields'],
+    inject: ['Fields'],
 
     props: {
 
@@ -160,7 +159,7 @@ var Field = {
 
             get: function get$$1() {
 
-                if (this.enable && !this.fields.evaluate(this.enable)) {
+                if (this.enable && !this.Fields.evaluate(this.enable)) {
                     return assign({disabled: 'true'}, this.attrs);
                 }
 
@@ -219,7 +218,7 @@ var FieldTextarea = {render: function(){var _vm=this;var _h=_vm.$createElement;v
 
 };
 
-var FieldRadio = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._l((_vm.filterOptions(_vm.options)),function(option){return [_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],attrs:{"type":"radio","name":_vm.name},domProps:{"value":option.value,"checked":_vm._q(_vm.value,option.value)},on:{"change":function($event){_vm.value=option.value;}}},'input',_vm.attributes,false)),_vm._v(" "),_c('label',[_vm._v(_vm._s(option.text))])]})],2)},staticRenderFns: [],
+var FieldRadio = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._l((_vm.filterOptions(_vm.options)),function(option){return [_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.value),expression:"value"}],attrs:{"name":_vm.name,"type":"radio"},domProps:{"value":option.value,"checked":_vm._q(_vm.value,option.value)},on:{"change":function($event){_vm.value=option.value;}}},'input',_vm.attributes,false)),_vm._v(" "),_c('label',[_vm._v(_vm._s(option.text))])]})],2)},staticRenderFns: [],
 
     extends: Field
 
@@ -262,16 +261,14 @@ var Fields = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_
     },
 
     provide: function provide() {
-        return {
-            fields: this
-        };
+        return {Fields: this};
     },
 
     props: {
 
         config: {
             type: [Object, Array],
-            required: true
+            default: function () {}
         },
 
         values: {
@@ -305,24 +302,23 @@ var Fields = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_
             }
         },
 
-        evaluate: function evaluate$1(expr, data) {
+        evaluate: function evaluate$1(expr, values) {
+            if ( values === void 0 ) values = this.values;
 
-            data = data || this.values;
 
             if (isString(expr)) {
-                return evaluate(expr, assign({$match: $match}, data));
+                return evaluate(expr, assign({$match: $match}, values));
             }
 
-            return expr.call(this, data, this);
+            return expr.call(this, values, this);
         },
 
         prepare: function prepare(config, prefix) {
             var this$1 = this;
+            if ( prefix === void 0 ) prefix = this.prefix;
 
 
             var arr = isArray(config), fields = [];
-
-            prefix = prefix || this.prefix;
 
             each(config, function (field, name) {
 

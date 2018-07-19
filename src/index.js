@@ -4,7 +4,7 @@
 
 import Util from './util';
 import Field from './field';
-import Fields from './components/fields.vue';
+import Fields from './fields.vue';
 
 export default function plugin(Vue) {
 

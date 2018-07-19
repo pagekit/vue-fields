@@ -26,7 +26,7 @@ jobs:
             - ~/.yarn
       - run:
           name: Lint JavaScript
-          command: yarn run eslint
+          command: yarn eslint
       - run:
           name: Build Release
-          command: yarn run build
+          command: yarn build

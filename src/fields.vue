@@ -11,14 +11,14 @@
 
 <script>
 
-    import FieldText from './field-text.vue';
-    import FieldTextarea from './field-textarea.vue';
-    import FieldRadio from './field-radio.vue';
-    import FieldCheckbox from './field-checkbox.vue';
-    import FieldSelect from './field-select.vue';
-    import FieldRange from './field-range.vue';
-    import FieldNumber from './field-number.vue';
-    import {set, each, warn, assign, evaluate, isArray, isString, isUndefined} from '../util';
+    import FieldText from './components/Text.vue';
+    import FieldTextarea from './components/Textarea.vue';
+    import FieldRadio from './components/Radio.vue';
+    import FieldCheckbox from './components/Checkbox.vue';
+    import FieldSelect from './components/Select.vue';
+    import FieldRange from './components/Range.vue';
+    import FieldNumber from './components/Number.vue';
+    import {set, each, warn, assign, evaluate, isArray, isString, isUndefined} from './util';
 
     export default {
 

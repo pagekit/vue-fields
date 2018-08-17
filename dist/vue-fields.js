@@ -1,5 +1,5 @@
 /*!
- * vue-fields v1.0.3
+ * vue-fields v1.0.4
  * https://github.com/pagekit/vue-fields
  * Released under the MIT License.
  */
@@ -25,7 +25,7 @@
 
     function warn(msg) {
         if (typeof console !== 'undefined' && debug) {
-            console.warn(("[VueForm warn]: " + msg));
+            console.warn(("[VueFields warn]: " + msg));
         }
     }
 
@@ -178,7 +178,7 @@
 
         created: function created() {
 
-            if (isUndefined(this.value)) {
+            if (isUndefined(this.value) && !isUndefined(this.default)) {
                 this.value = this.default;
             }
 

@@ -59,7 +59,7 @@ export default {
 
     created() {
 
-        if (isUndefined(this.value)) {
+        if (isUndefined(this.value) && !isUndefined(this.default)) {
             this.value = this.default;
         }
 

@@ -28,17 +28,12 @@
 <script>
 
     import FieldsCustom from './FieldsCustom.vue';
+    import {action} from '@storybook/addon-actions';
 
     export default {
 
         components: {
             FieldsCustom
-        },
-
-        props: {
-
-            action: Function,
-
         },
 
         data: () => ({
@@ -110,8 +105,8 @@
 
         methods: {
 
-            change(value, field) {
-                this.action(`@change (${field.name})`)(value);
+            change(value, {name}) {
+                action(`@change (${name})`)(value);
             }
 
         }

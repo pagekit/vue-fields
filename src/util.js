@@ -4,16 +4,18 @@
 
 let debug = false, _set;
 
+export const assign = Object.assign || _assign;
+
 export const isArray = Array.isArray;
 
-export default function (Vue) {
-    _set = Vue.set;
-    debug = Vue.config.debug || !Vue.config.silent;
+export default function ({set, config}) {
+    _set = set;
+    debug = config.debug || !config.silent;
 }
 
 export function warn(msg) {
     if (typeof console !== 'undefined' && debug) {
-        console.warn(`[VueFields warn]: ${msg}`);
+        console.log(`%c vue-fields %c ${msg} `, 'color: #fff; background: #35495E; padding: 1px; border-radius: 3px 0 0 3px;', 'color: #fff; background: #DB6B00; padding: 1px; border-radius: 0 3px 3px 0;');
     }
 }
 
@@ -63,11 +65,14 @@ export function set(obj, key, val) {
 }
 
 export function evaluate(expr, context) {
+
     try {
         return (Function(`with(this){return ${expr}}`)).call(context);
     } catch (e) {
-        return false;
+        warn(e);
     }
+
+    return false;
 }
 
 export function each(obj, iterator) {
@@ -89,18 +94,16 @@ export function each(obj, iterator) {
     return obj;
 }
 
-export const assign = Object.assign || function (target) {
+/**
+ * Object.assign() polyfill.
+ */
+function _assign(target, ...sources) {
 
-    for (let i = 1; i < arguments.length; i++) {
-
-        const source = arguments[i];
-
-        for (const key in source) {
-            if (Object.prototype.hasOwnProperty.call(source, key)) {
-                target[key] = source[key];
-            }
-        }
-    }
+    sources.forEach(source => {
+        Object.keys(source || {}).forEach(
+            key => target[key] = source[key]
+        );
+    });
 
     return target;
-};
+}

@@ -18,7 +18,7 @@
     import FieldSelect from './components/Select.vue';
     import FieldRange from './components/Range.vue';
     import FieldNumber from './components/Number.vue';
-    import {set, each, warn, assign, evaluate, isArray, isString, isUndefined} from './util';
+    import {get, set, each, warn, assign, evaluate, isArray, isString, isUndefined} from './util';
 
     export default {
 
@@ -58,7 +58,7 @@
         computed: {
 
             fields() {
-                return this.prepare(this.config, this.prefix);
+                return this.prepare();
             }
 
         },
@@ -74,25 +74,33 @@
                 }
             },
 
-            evaluate(expr, values = this.values) {
+            evaluate(expr, values = this.values, config = this.config) {
 
                 if (isString(expr)) {
-                    return evaluate(expr, assign({$match}, values));
+
+                    const $values = {};
+                    const context = {$match, $values};
+
+                    each(config, ({name = key}, key) =>
+                        set($values, name, get(values, name))
+                    );
+
+                    return evaluate(expr, assign(context, $values));
                 }
 
                 return expr.call(this, values, this);
             },
 
-            prepare(config, prefix = this.prefix) {
+            prepare(config = this.config, prefix = this.prefix) {
 
                 const arr = isArray(config), fields = [];
 
-                each(config, (field, name) => {
+                each(config, (field, key) => {
 
                     field = assign({}, field);
 
                     if (!field.name && !arr) {
-                        field.name = name;
+                        field.name = key;
                     }
 
                     if (field.name) {

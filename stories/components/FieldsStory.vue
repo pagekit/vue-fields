@@ -89,7 +89,7 @@
                 _enable: {
                     label: 'Enable/Disable',
                     type: 'text',
-                    enable: values => values.enable
+                    enable: ({enable}) => enable
                 },
 
                 'nested.text': {

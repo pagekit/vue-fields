@@ -16,16 +16,21 @@
 
     var debug = false, _set;
 
+    var assign = Object.assign || _assign;
+
     var isArray = Array.isArray;
 
-    function Util (Vue) {
-        _set = Vue.set;
-        debug = Vue.config.debug || !Vue.config.silent;
+    function Util (ref) {
+        var set = ref.set;
+        var config = ref.config;
+
+        _set = set;
+        debug = config.debug || !config.silent;
     }
 
     function warn(msg) {
         if (typeof console !== 'undefined' && debug) {
-            console.warn(("[VueFields warn]: " + msg));
+            console.log(("%c vue-fields %c " + msg + " "), 'color: #fff; background: #35495E; padding: 1px; border-radius: 3px 0 0 3px;', 'color: #fff; background: #DB6B00; padding: 1px; border-radius: 0 3px 3px 0;');
         }
     }
 
@@ -75,11 +80,14 @@
     }
 
     function evaluate(expr, context) {
+
         try {
             return (Function(("with(this){return " + expr + "}"))).call(context);
         } catch (e) {
-            return false;
+            warn(e);
         }
+
+        return false;
     }
 
     function each(obj, iterator) {
@@ -101,23 +109,22 @@
         return obj;
     }
 
-    var assign = Object.assign || function (target) {
-        var arguments$1 = arguments;
+    /**
+     * Object.assign() polyfill.
+     */
+    function _assign(target) {
+        var sources = [], len = arguments.length - 1;
+        while ( len-- > 0 ) sources[ len ] = arguments[ len + 1 ];
 
 
-        for (var i = 1; i < arguments.length; i++) {
-
-            var source = arguments$1[i];
-
-            for (var key in source) {
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
-            }
-        }
+        sources.forEach(function (source) {
+            Object.keys(source || {}).forEach(
+                function (key) { return target[key] = source[key]; }
+            );
+        });
 
         return target;
-    };
+    }
 
     var Field = {
 
@@ -292,7 +299,7 @@
         computed: {
 
             fields: function fields() {
-                return this.prepare(this.config, this.prefix);
+                return this.prepare();
             }
 
         },
@@ -308,12 +315,24 @@
                 }
             },
 
-            evaluate: function evaluate$1(expr, values) {
+            evaluate: function evaluate$1(expr, values, config) {
                 if ( values === void 0 ) values = this.values;
+                if ( config === void 0 ) config = this.config;
 
 
                 if (isString(expr)) {
-                    return evaluate(expr, assign({$match: $match}, values));
+
+                    var $values = {};
+                    var context = {$match: $match, $values: $values};
+
+                    each(config, function (ref, key) {
+                            var name = ref.name; if ( name === void 0 ) name = key;
+
+                            return set($values, name, get(values, name));
+                    }
+                    );
+
+                    return evaluate(expr, assign(context, $values));
                 }
 
                 return expr.call(this, values, this);
@@ -321,17 +340,18 @@
 
             prepare: function prepare(config, prefix) {
                 var this$1 = this;
+                if ( config === void 0 ) config = this.config;
                 if ( prefix === void 0 ) prefix = this.prefix;
 
 
                 var arr = isArray(config), fields = [];
 
-                each(config, function (field, name) {
+                each(config, function (field, key) {
 
                     field = assign({}, field);
 
                     if (!field.name && !arr) {
-                        field.name = name;
+                        field.name = key;
                     }
 
                     if (field.name) {

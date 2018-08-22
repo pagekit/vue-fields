@@ -1,5 +1,5 @@
 /*!
- * vue-fields v1.0.4
+ * vue-fields v1.0.5
  * https://github.com/pagekit/vue-fields
  * Released under the MIT License.
  */
@@ -75,10 +75,10 @@ function set(obj, key, val) {
     _set(obj, parts.shift(), val);
 }
 
-function evaluate(expr, context) {
+function evaluate(self, expr, context) {
 
     try {
-        return (Function(("with(this){return " + expr + "}"))).call(context);
+        return (Function('c', ("with(c){return " + expr + "}"))).call(self, context);
     } catch (e) {
         warn(e);
     }
@@ -318,17 +318,16 @@ var Fields = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_
 
             if (isString(expr)) {
 
-                var $values = {};
-                var context = {$match: $match, $values: $values};
+                var context = {$match: $match, $values: values};
 
                 each(config, function (ref, key) {
                         var name = ref.name; if ( name === void 0 ) name = key;
 
-                        return set($values, name, get(values, name));
+                        return set(context, name, get(values, name));
                 }
                 );
 
-                return evaluate(expr, assign(context, $values));
+                return evaluate(this, expr, assign(context, values));
             }
 
             return expr.call(this, values, this);

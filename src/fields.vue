@@ -78,14 +78,13 @@
 
                 if (isString(expr)) {
 
-                    const $values = {};
-                    const context = {$match, $values};
+                    const context = {$match, $values: values};
 
                     each(config, ({name = key}, key) =>
-                        set($values, name, get(values, name))
+                        set(context, name, get(values, name))
                     );
 
-                    return evaluate(expr, assign(context, $values));
+                    return evaluate(this, expr, assign(context, values));
                 }
 
                 return expr.call(this, values, this);

@@ -64,10 +64,10 @@ export function set(obj, key, val) {
     _set(obj, parts.shift(), val);
 }
 
-export function evaluate(expr, context) {
+export function evaluate(self, expr, context) {
 
     try {
-        return (Function(`with(this){return ${expr}}`)).call(context);
+        return (Function('c', `with(c){return ${expr}}`)).call(self, context);
     } catch (e) {
         warn(e);
     }

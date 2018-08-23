@@ -6,6 +6,7 @@ const rollup = require('rollup');
 const uglify = require('uglify-js');
 const vue = require('rollup-plugin-vue');
 const buble = require('rollup-plugin-buble');
+const replace = require('rollup-plugin-replace');
 const {name, version, homepage} = require('../package.json');
 const banner =
     '/*!\n' +
@@ -16,7 +17,7 @@ const banner =
 
 rollup.rollup({
     input: 'src/index.js',
-    plugins: [vue(), buble()]
+    plugins: [vue(), buble(), replace({__VERSION__: version})]
 })
 .then(bundle =>
     bundle.generate({

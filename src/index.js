@@ -2,25 +2,32 @@
  * Install plugin.
  */
 
-import Util from './util';
 import Field from './field';
 import Fields from './fields.vue';
+import Util, {log} from './util';
 
-export default function plugin(Vue) {
+const Plugin = {
 
-    if (plugin.installed) {
-        return;
-    }
+    Field,
+    Fields,
 
-    Util(Vue);
+    install(Vue) {
 
-    Vue.component('field', Field);
-    Vue.component('fields', Fields);
-}
+        if (this.installed) {
+            return;
+        }
 
-plugin.Field = Field;
-plugin.Fields = Fields;
+        Util(Vue); log(this.version);
+
+        Vue.component('field', Field);
+        Vue.component('fields', Fields);
+    },
+
+    version: '__VERSION__'
+};
 
 if (typeof window !== 'undefined' && window.Vue) {
-    window.Vue.use(plugin);
+    window.Vue.use(Plugin);
 }
+
+export default Plugin;

@@ -1,5 +1,5 @@
 /*!
- * vue-fields v1.0.5
+ * vue-fields v1.0.6
  * https://github.com/pagekit/vue-fields
  * Released under the MIT License.
  */
@@ -14,7 +14,7 @@
      * Utility functions.
      */
 
-    var debug = false, _set;
+    var _config = {}, _set;
 
     var assign = Object.assign || _assign;
 
@@ -25,13 +25,21 @@
         var config = ref.config;
 
         _set = set;
-        debug = config.debug || !config.silent;
+        _config = config;
     }
 
-    function warn(msg) {
-        if (typeof console !== 'undefined' && debug) {
-            console.log(("%c vue-fields %c " + msg + " "), 'color: #fff; background: #35495E; padding: 1px; border-radius: 3px 0 0 3px;', 'color: #fff; background: #DB6B00; padding: 1px; border-radius: 0 3px 3px 0;');
+    function log(message, color) {
+        if ( color === void 0 ) color = '#41B883';
+
+        if (typeof console !== 'undefined' && _config.devtools) {
+            console.log(("%c vue-fields %c " + message + " "), 'color: #fff; background: #35495E; padding: 1px; border-radius: 3px 0 0 3px;', ("color: #fff; background: " + color + "; padding: 1px; border-radius: 0 3px 3px 0;"));
         }
+    }
+
+    function warn(message, color) {
+        if ( color === void 0 ) color = '#DB6B00';
+
+        log(message, color);
     }
 
     function isString(val) {
@@ -388,25 +396,30 @@
      * Install plugin.
      */
 
-    function plugin(Vue) {
+    var Plugin = {
 
-        if (plugin.installed) {
-            return;
-        }
+        Field: Field,
+        Fields: Fields,
 
-        Util(Vue);
+        install: function install(Vue) {
 
-        Vue.component('field', Field);
-        Vue.component('fields', Fields);
-    }
+            if (this.installed) {
+                return;
+            }
 
-    plugin.Field = Field;
-    plugin.Fields = Fields;
+            Util(Vue); log(this.version);
+
+            Vue.component('field', Field);
+            Vue.component('fields', Fields);
+        },
+
+        version: '1.0.6'
+    };
 
     if (typeof window !== 'undefined' && window.Vue) {
-        window.Vue.use(plugin);
+        window.Vue.use(Plugin);
     }
 
-    return plugin;
+    return Plugin;
 
 })));

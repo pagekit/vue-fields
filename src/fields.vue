@@ -18,7 +18,7 @@
     import FieldSelect from './components/Select.vue';
     import FieldRange from './components/Range.vue';
     import FieldNumber from './components/Number.vue';
-    import {get, set, each, warn, assign, evaluate, isArray, isString, isUndefined} from './util';
+    import {assign, each, evaluate, get, isArray, isString, isUndefined, set, warn} from './util';
 
     export default {
 
@@ -74,17 +74,13 @@
                 }
             },
 
-            evaluate(expr, values = this.values, config = this.config) {
+            evaluate(expr, values = this.values) {
 
                 if (isString(expr)) {
 
-                    const context = {$match, $values: values};
+                    const context = {$match, $values: values, $get: key => get(values, key)};
 
-                    each(config, ({name = key}, key) =>
-                        set(context, name, get(values, name))
-                    );
-
-                    return evaluate(this, expr, assign(context, values));
+                    return evaluate(this, expr, context);
                 }
 
                 return expr.call(this, values, this);

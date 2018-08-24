@@ -68,10 +68,19 @@ export function set(obj, key, val) {
     _set(obj, parts.shift(), val);
 }
 
+const quotedStringRe = /([^"']+)((.)(?:[^\3\\]|\\.)*?\3|.)?/g;
+const expressionRe = /((?:\d|true|false|null|undefined|(?:this\.|\$)[\S]+|\W)*)([\w][\w+.]*)?/g;
+const expressions = {};
 export function evaluate(self, expr, context) {
 
+    expressions[expr] = expressions[expr] || expr.replace(quotedStringRe, (match, unquoted, quoted = '') =>
+        unquoted.replace(expressionRe, (match, prefix = '', expr) =>
+            match ? `${prefix}${expr ? `$get('${expr}')` : ''}` : ''
+        ) + quoted
+    );
+
     try {
-        return (Function('c', `with(c){return ${expr}}`)).call(self, context);
+        return (Function('c', `with(c){return ${expressions[expr]}}`)).call(self, context);
     } catch (e) {
         warn(e);
     }

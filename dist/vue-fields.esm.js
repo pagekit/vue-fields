@@ -1,5 +1,5 @@
 /*!
- * vue-fields v1.0.6
+ * vue-fields v1.0.7
  * https://github.com/pagekit/vue-fields
  * Released under the MIT License.
  */
@@ -81,15 +81,25 @@ function set(obj, key, val) {
     _set(obj, parts.shift(), val);
 }
 
-function evaluate(self, expr, context) {
+var parsedFunc = {};
+var expressionRe = /((?:\d|true|false|null|undefined|(?:this\.|\$)[\S]+|\W)*)([\w][\w+.]*)?/g;
+var quotedStringRe = /([^"']+)((.)(?:[^\3\\]|\\.)*?\3|.)?/g;
 
-    try {
-        return (Function('c', ("with(c){return " + expr + "}"))).call(self, context);
-    } catch (e) {
-        warn(e);
+function parse(expr) {
+    return parsedFunc[expr] = parsedFunc[expr] ||
+        Function('$values', '$context', ("with($context){return " + (expr.replace(quotedStringRe,
+            function (match, unquoted, quoted) {
+                if ( quoted === void 0 ) quoted = '';
+
+                return unquoted.replace(expressionRe,
+                function (match, prefix, expression) {
+                    if ( prefix === void 0 ) prefix = '';
+
+                    return match ? ("" + prefix + (expression ? ("$get('" + expression + "')") : '')) : '';
+                }
+            ) + quoted;
     }
-
-    return false;
+    )) + "}"));
 }
 
 function each(obj, iterator) {
@@ -317,26 +327,25 @@ var Fields = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_
             }
         },
 
-        evaluate: function evaluate$1(expr, values, config) {
+        evaluate: function evaluate(expression, values) {
             if ( values === void 0 ) values = this.values;
-            if ( config === void 0 ) config = this.config;
 
 
-            if (isString(expr)) {
+            try {
 
-                var context = {$match: $match, $values: values};
-
-                each(config, function (ref, key) {
-                        var name = ref.name; if ( name === void 0 ) name = key;
-
-                        return set(context, name, get(values, name));
+                if (isString(expression)) {
+                    expression = parse(expression);
                 }
-                );
 
-                return evaluate(this, expr, assign(context, values));
+                return expression.call(this, values, {
+                    $match: $match, $get: function (key) { return get(values, key); }
+                });
+
+            } catch (e) {
+                warn(e);
             }
 
-            return expr.call(this, values, this);
+            return true;
         },
 
         prepare: function prepare(config, prefix) {
@@ -407,7 +416,7 @@ var Plugin = {
         Vue.component('fields', Fields);
     },
 
-    version: '1.0.6'
+    version: '1.0.7'
 };
 
 if (typeof window !== 'undefined' && window.Vue) {

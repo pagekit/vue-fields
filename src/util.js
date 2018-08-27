@@ -68,24 +68,17 @@ export function set(obj, key, val) {
     _set(obj, parts.shift(), val);
 }
 
-const quotedStringRe = /([^"']+)((.)(?:[^\3\\]|\\.)*?\3|.)?/g;
+const parsedFunc = {};
 const expressionRe = /((?:\d|true|false|null|undefined|(?:this\.|\$)[\S]+|\W)*)([\w][\w+.]*)?/g;
-const expressions = {};
-export function evaluate(self, expr, context) {
+const quotedStringRe = /([^"']+)((.)(?:[^\3\\]|\\.)*?\3|.)?/g;
 
-    expressions[expr] = expressions[expr] || expr.replace(quotedStringRe, (match, unquoted, quoted = '') =>
-        unquoted.replace(expressionRe, (match, prefix = '', expr) =>
-            match ? `${prefix}${expr ? `$get('${expr}')` : ''}` : ''
-        ) + quoted
-    );
-
-    try {
-        return (Function('c', `with(c){return ${expressions[expr]}}`)).call(self, context);
-    } catch (e) {
-        warn(e);
-    }
-
-    return false;
+export function parse(expr) {
+    return parsedFunc[expr] = parsedFunc[expr] ||
+        Function('$values', '$context', `with($context){return ${expr.replace(quotedStringRe,
+            (match, unquoted, quoted = '') => unquoted.replace(expressionRe,
+                (match, prefix = '', expression) => match ? `${prefix}${expression ? `$get('${expression}')` : ''}` : ''
+            ) + quoted
+    )}}`);
 }
 
 export function each(obj, iterator) {

@@ -1,6 +1,6 @@
 {
     "name": "vue-fields",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "The form fields generator for Vue.js",
     "homepage": "https://github.com/pagekit/vue-fields",
     "license": "MIT",

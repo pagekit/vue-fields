@@ -16,9 +16,9 @@ $ npm install vue-fields
 ```
 
 ### CDN
-Available on [jsdelivr](https://cdn.jsdelivr.net/npm/vue-fields@1.0.7) or [unpkg](https://unpkg.com/vue-fields@1.0.7).
+Available on [jsdelivr](https://cdn.jsdelivr.net/npm/vue-fields@1.0.8) or [unpkg](https://unpkg.com/vue-fields@1.0.8).
 ```html
-<script src="https://cdn.jsdelivr.net/npm/vue-fields@1.0.7"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-fields@1.0.8"></script>
 ```
 
 ## Changelog

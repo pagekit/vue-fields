@@ -1,5 +1,5 @@
 /*!
- * vue-fields v1.0.8
+ * vue-fields v1.0.9
  * https://github.com/pagekit/vue-fields
  * Released under the MIT License.
  */
@@ -84,7 +84,7 @@ function set(obj, key, val) {
 }
 
 var parsedFunc = {};
-var expressionRe = /((?:\d|true|false|null|undefined|(?:this\.|\$)[\w.]+|\W)*)([\w][\w.]*)?/g;
+var expressionRe = /((?:\d|true|false|null|undefined|(?:this\.|\$)[\w.$]+|\W)*)([\w][\w.]*)?/g;
 var quotedStringRe = /([^"']+)((.)(?:[^\3\\]|\\.)*?\3|.)?/g;
 
 function parse(expr) {
@@ -418,7 +418,7 @@ var Plugin = {
         Vue.component('fields', Fields);
     },
 
-    version: '1.0.8'
+    version: '1.0.9'
 };
 
 if (typeof window !== 'undefined' && window.Vue) {

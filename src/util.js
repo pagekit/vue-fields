@@ -58,7 +58,7 @@ export function set(obj, key, val) {
 
         const part = parts.shift();
 
-        if (!isObject(obj[part]) || isArray(obj[part])) {
+        if (!isObject(obj[part])) {
             _set(obj, part, {});
         }
 

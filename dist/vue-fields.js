@@ -77,7 +77,7 @@
 
             var part = parts.shift();
 
-            if (!isObject(obj[part]) || isArray(obj[part])) {
+            if (!isObject(obj[part])) {
                 _set(obj, part, {});
             }
 

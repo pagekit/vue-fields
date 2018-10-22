@@ -18,7 +18,7 @@
     import FieldSelect from './components/Select.vue';
     import FieldRange from './components/Range.vue';
     import FieldNumber from './components/Number.vue';
-    import {assign, each, get, parse, isArray, isString, isUndefined, set, warn} from './util';
+    import {assign, each, get, parse, isArray, isString, set, warn} from './util';
 
     export default {
 
@@ -68,10 +68,8 @@
             change(value, field) {
 
                 set(this.values, field.name, value);
+                this.$emit('change', value, field);
 
-                if (!isUndefined(value)) {
-                    this.$emit('change', value, field);
-                }
             },
 
             evaluate(expression, values = this.values) {

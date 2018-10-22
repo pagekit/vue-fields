@@ -1,5 +1,5 @@
 /*!
- * vue-fields v1.0.9
+ * vue-fields v1.0.10
  * https://github.com/pagekit/vue-fields
  * Released under the MIT License.
  */
@@ -324,9 +324,7 @@ var Fields = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_
 
             set(this.values, field.name, value);
 
-            if (!isUndefined(value)) {
-                this.$emit('change', value, field);
-            }
+            this.$emit('change', value, field);
         },
 
         evaluate: function evaluate(expression, values) {
@@ -418,7 +416,7 @@ var Plugin = {
         Vue.component('fields', Fields);
     },
 
-    version: '1.0.9'
+    version: '1.0.10'
 };
 
 if (typeof window !== 'undefined' && window.Vue) {

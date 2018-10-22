@@ -68,8 +68,8 @@
             change(value, field) {
 
                 set(this.values, field.name, value);
-                this.$emit('change', value, field);
 
+                this.$emit('change', value, field);
             },
 
             evaluate(expression, values = this.values) {

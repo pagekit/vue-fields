@@ -1,5 +1,5 @@
 /*!
- * vue-fields v1.1.0
+ * vue-fields v1.1.1
  * https://github.com/pagekit/vue-fields
  * Released under the MIT License.
  */
@@ -631,7 +631,7 @@ var Plugin = {
     Vue.component('field', Field);
     Vue.component('fields', Fields);
   },
-  version: '1.1.0'
+  version: '1.1.1'
 };
 
 if (typeof window !== 'undefined' && window.Vue) {

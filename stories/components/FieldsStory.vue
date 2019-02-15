@@ -8,13 +8,13 @@
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h2 class="panel-title">Default</h2></div>
-                    <FieldsCustom class="panel-body" @change="change"/>
+                    <FieldsCustom/>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h2 class="panel-title">Custom</h2></div>
-                    <FieldsCustom class="panel-body" @change="change"/>
+                    <FieldsCustom/>
                 </div>
             </div>
         </div>

@@ -18,7 +18,7 @@
     import FieldSelect from './components/Select.vue';
     import FieldRange from './components/Range.vue';
     import FieldNumber from './components/Number.vue';
-    import {assign, each, get, parse, isArray, isString, isUndefined, set, warn} from './util';
+    import {assign, each, get, parse, isArray, isString, isFunction, isUndefined, set, warn} from './util';
 
     export default {
 
@@ -72,29 +72,6 @@
                 this.$emit('change', value, field);
             },
 
-            evaluate(expression, values = this.values) {
-
-                try {
-
-                    if (isUndefined(expression)) {
-                        return true;
-                    }
-
-                    if (isString(expression)) {
-                        expression = parse(expression);
-                    }
-
-                    return expression.call(this, values, {
-                        $match, $get: key => get(values, key)
-                    });
-
-                } catch (e) {
-                    warn(e);
-                }
-
-                return true;
-            },
-
             prepare(config = this.config, prefix = this.prefix) {
 
                 const arr = isArray(config), fields = [];
@@ -126,6 +103,31 @@
                 });
 
                 return fields;
+            },
+
+            evaluate(expression, values = this.values) {
+
+                try {
+
+                    if (isUndefined(expression)) {
+                        return true;
+                    }
+
+                    if (isString(expression)) {
+                        expression = parse(expression);
+                    }
+
+                    if (isFunction(expression)) {
+                        return expression.call(this, values, {$match, $get: key => get(values, key)});
+                    }
+
+                    return expression;
+
+                } catch (e) {
+                    warn(e);
+                }
+
+                return true;
             }
 
         }

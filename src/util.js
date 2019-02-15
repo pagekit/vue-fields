@@ -23,12 +23,16 @@ export function warn(message, color = '#DB6B00') {
     log(message, color);
 }
 
+export function isObject(obj) {
+    return obj !== null && typeof obj === 'object';
+}
+
 export function isString(val) {
     return typeof val === 'string';
 }
 
-export function isObject(obj) {
-    return obj !== null && typeof obj === 'object';
+export function isFunction(val) {
+    return typeof val === 'function';
 }
 
 export function isUndefined(val) {

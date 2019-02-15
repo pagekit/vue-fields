@@ -46,7 +46,7 @@ export default {
 
             get() {
 
-                if (this.enable && !this.Fields.evaluate(this.enable)) {
+                if (!this.Fields.evaluate(this.enable)) {
                     return assign({disabled: 'true'}, this.attrs);
                 }
 

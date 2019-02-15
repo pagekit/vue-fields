@@ -1,7 +1,7 @@
 <template>
 
     <div>
-        <div v-for="field in fields" :key="field.name">
+        <div v-for="field in fields" v-show="evaluate(field.show)" :key="field.name">
             <label v-if="field.type != 'checkbox'">{{ field.label }}</label>
             <component :is="field.component" :field="field" :values="values" @change="change"/>
         </div>
@@ -18,7 +18,7 @@
     import FieldSelect from './components/Select.vue';
     import FieldRange from './components/Range.vue';
     import FieldNumber from './components/Number.vue';
-    import {assign, each, get, parse, isArray, isString, set, warn} from './util';
+    import {assign, each, get, parse, isArray, isString, isUndefined, set, warn} from './util';
 
     export default {
 
@@ -40,12 +40,12 @@
 
             config: {
                 type: [Object, Array],
-                default: () => {}
+                default: () => ({})
             },
 
             values: {
                 type: Object,
-                default: () => {}
+                default: () => ({})
             },
 
             prefix: {
@@ -75,6 +75,10 @@
             evaluate(expression, values = this.values) {
 
                 try {
+
+                    if (isUndefined(expression)) {
+                        return true;
+                    }
 
                     if (isString(expression)) {
                         expression = parse(expression);
@@ -113,9 +117,7 @@
                             field.component = prefix + field.type;
                         }
 
-                        if (!field.show || this.evaluate(field.show)) {
-                            fields.push(field);
-                        }
+                        fields.push(field);
 
                     } else {
                         warn(`Field name missing ${JSON.stringify(field)}`);

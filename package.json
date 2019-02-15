@@ -8,6 +8,10 @@
     "module": "dist/vue-fields.esm.js",
     "unpkg": "dist/vue-fields.min.js",
     "jsdelivr": "dist/vue-fields.min.js",
+    "files": [
+        "src",
+        "dist"
+    ],
     "keywords": [
         "vue",
         "vuejs",

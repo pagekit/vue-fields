@@ -41,10 +41,10 @@ export function isUndefined(val) {
 
 export function get(obj, key, def) {
 
-    const parts = key.split('.');
+    const parts = isArray(key) ? key : key.split('.');
 
     for (let i = 0; i < parts.length; i++) {
-        if (!isUndefined(obj[parts[i]])) {
+        if (isObject(obj) && !isUndefined(obj[parts[i]])) {
             obj = obj[parts[i]];
         } else {
             return def;
@@ -56,7 +56,7 @@ export function get(obj, key, def) {
 
 export function set(obj, key, val) {
 
-    const parts = key.split('.');
+    const parts = isArray(key) ? key : key.split('.');
 
     while (parts.length > 1) {
 

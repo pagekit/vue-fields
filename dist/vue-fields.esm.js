@@ -1,5 +1,5 @@
 /*!
- * vue-fields v1.1.1
+ * vue-fields v1.1.2
  * https://github.com/pagekit/vue-fields
  * Released under the MIT License.
  */
@@ -47,10 +47,10 @@ function isUndefined(val) {
   return typeof val === 'undefined';
 }
 function get(obj, key, def) {
-  var parts = key.split('.');
+  var parts = isArray(key) ? key : key.split('.');
 
   for (var i = 0; i < parts.length; i++) {
-    if (!isUndefined(obj[parts[i]])) {
+    if (isObject(obj) && !isUndefined(obj[parts[i]])) {
       obj = obj[parts[i]];
     } else {
       return def;
@@ -60,7 +60,7 @@ function get(obj, key, def) {
   return obj;
 }
 function set(obj, key, val) {
-  var parts = key.split('.');
+  var parts = isArray(key) ? key : key.split('.');
 
   while (parts.length > 1) {
     var part = parts.shift();
@@ -629,7 +629,7 @@ var Plugin = {
     Vue.component('field', Field);
     Vue.component('fields', Fields);
   },
-  version: '1.1.1'
+  version: '1.1.2'
 };
 
 if (typeof window !== 'undefined' && window.Vue) {

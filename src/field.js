@@ -33,7 +33,14 @@ export default {
         value: {
 
             get() {
-                return get(this.values, this.name);
+
+                const value = get(this.values, this.name);
+
+                if (isUndefined(value) && !isUndefined(this.default)) {
+                    return this.value = this.default;
+                }
+
+                return value;
             },
 
             set(value) {
@@ -54,14 +61,6 @@ export default {
             }
 
         },
-
-    },
-
-    created() {
-
-        if (isUndefined(this.value) && !isUndefined(this.default)) {
-            this.value = this.default;
-        }
 
     },
 

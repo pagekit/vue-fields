@@ -1,35 +1,25 @@
 <template>
 
-    <div>
-        <div v-for="field in fields" v-show="evaluate(field.show)" :key="field.name">
-            <label v-if="field.type != 'checkbox'">{{ field.label }}</label>
-            <component :is="field.component" :field="field" :values="values" @change="change"/>
-        </div>
-    </div>
+    <component :is="tag">
+        <slot :fields="fields" :evaluate="evaluate">
+            <div v-for="field in fields" v-show="evaluate(field.show)" :key="field.name">
+                <label v-if="field.type !== 'checkbox'">{{ field.label }}</label>
+                <component :is="field.component" :field="field"/>
+            </div>
+        </slot>
+    </component>
 
 </template>
 
 <script>
 
-    import FieldText from './components/Text.vue';
-    import FieldTextarea from './components/Textarea.vue';
-    import FieldRadio from './components/Radio.vue';
-    import FieldCheckbox from './components/Checkbox.vue';
-    import FieldSelect from './components/Select.vue';
-    import FieldRange from './components/Range.vue';
-    import FieldNumber from './components/Number.vue';
+    import * as FieldComponents from './components/index.js';
     import {assign, each, get, parse, isArray, isString, isFunction, isUndefined, set, warn} from './util';
 
     export default {
 
         components: {
-            FieldText,
-            FieldTextarea,
-            FieldRadio,
-            FieldCheckbox,
-            FieldSelect,
-            FieldRange,
-            FieldNumber
+            ...FieldComponents
         },
 
         provide() {
@@ -51,6 +41,11 @@
             prefix: {
                 type: String,
                 default: 'field-'
+            },
+
+            tag: {
+                type: String,
+                default: 'div'
             }
 
         },

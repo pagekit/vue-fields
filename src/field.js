@@ -9,11 +9,6 @@ export default {
         field: {
             type: Object,
             required: true
-        },
-
-        values: {
-            type: Object,
-            required: true
         }
 
     },
@@ -34,7 +29,7 @@ export default {
 
             get() {
 
-                const value = get(this.values, this.name);
+                const value = get(this.Fields.values, this.name);
 
                 if (isUndefined(value) && !isUndefined(this.default)) {
                     return this.value = this.default;
@@ -44,7 +39,7 @@ export default {
             },
 
             set(value) {
-                this.$emit('change', value, this);
+                this.Fields.change(value, this.field);
             }
 
         },

@@ -73,7 +73,7 @@ export function set(obj, key, val) {
 }
 
 const parsedFunc = {};
-const expressionRe = /((?:\d|true|false|null|undefined|(?:this\.|\$)[\w.$]+|\W)*)([\w][\w.]*)?/g;
+const expressionRe = /((?:\d|true|false|null|undefined|(?:this\.|\$)[\w.$]+|\W)*)([\w][\w.-]*)?/g;
 const quotedStringRe = /([^"']+)((.)(?:[^\3\\]|\\.)*?\3|.)?/g;
 
 export function parse(expr) {

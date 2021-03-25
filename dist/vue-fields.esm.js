@@ -1,5 +1,5 @@
 /*!
- * vue-fields v1.1.2
+ * vue-fields v1.1.3
  * https://github.com/pagekit/vue-fields
  * Released under the MIT License.
  */
@@ -75,7 +75,7 @@ function set(obj, key, val) {
   _set(obj, parts.shift(), val);
 }
 var parsedFunc = {};
-var expressionRe = /((?:\d|true|false|null|undefined|(?:this\.|\$)[\w.$]+|\W)*)([\w][\w.]*)?/g;
+var expressionRe = /((?:\d|true|false|null|undefined|(?:this\.|\$)[\w.$]+|\W)*)([\w][\w.-]*)?/g;
 var quotedStringRe = /([^"']+)((.)(?:[^\3\\]|\\.)*?\3|.)?/g;
 function parse(expr) {
   return parsedFunc[expr] = parsedFunc[expr] || Function('$values', '$context', "with($context){return " + expr.replace(quotedStringRe, function (match, unquoted, quoted) {
@@ -144,7 +144,7 @@ var Field = {
       label: '',
       attrs: {},
       options: [],
-      default: undefined
+      "default": undefined
     }, this.field);
   },
   computed: {
@@ -169,8 +169,8 @@ var Field = {
     }
   },
   created: function created() {
-    if (isUndefined(this.value) && !isUndefined(this.default)) {
-      this.value = this.default;
+    if (isUndefined(this.value) && !isUndefined(this["default"])) {
+      this.value = this["default"];
     }
   },
   methods: {
@@ -235,7 +235,7 @@ var FieldText = {
     }, 'input', _vm.attributes, false));
   },
   staticRenderFns: [],
-  extends: Field
+  "extends": Field
 };
 
 var FieldTextarea = {
@@ -268,7 +268,7 @@ var FieldTextarea = {
     }, 'textarea', _vm.attributes, false));
   },
   staticRenderFns: [],
-  extends: Field
+  "extends": Field
 };
 
 var FieldRadio = {
@@ -304,7 +304,7 @@ var FieldRadio = {
     })], 2);
   },
   staticRenderFns: [],
-  extends: Field
+  "extends": Field
 };
 
 var FieldCheckbox = {
@@ -351,7 +351,7 @@ var FieldCheckbox = {
     }, 'input', _vm.attributes, false));
   },
   staticRenderFns: [],
-  extends: Field
+  "extends": Field
 };
 
 var FieldSelect = {
@@ -399,7 +399,7 @@ var FieldSelect = {
     })], 2);
   },
   staticRenderFns: [],
-  extends: Field
+  "extends": Field
 };
 
 var FieldRange = {
@@ -431,7 +431,7 @@ var FieldRange = {
     }, 'input', _vm.attributes, false));
   },
   staticRenderFns: [],
-  extends: Field
+  "extends": Field
 };
 
 var FieldNumber = {
@@ -467,7 +467,7 @@ var FieldNumber = {
     }, 'input', _vm.attributes, false));
   },
   staticRenderFns: [],
-  extends: Field
+  "extends": Field
 };
 
 var Fields = {
@@ -517,19 +517,19 @@ var Fields = {
   props: {
     config: {
       type: [Object, Array],
-      default: function _default() {
+      "default": function _default() {
         return {};
       }
     },
     values: {
       type: Object,
-      default: function _default() {
+      "default": function _default() {
         return {};
       }
     },
     prefix: {
       type: String,
-      default: 'field-'
+      "default": 'field-'
     }
   },
   computed: {
@@ -629,7 +629,7 @@ var Plugin = {
     Vue.component('field', Field);
     Vue.component('fields', Fields);
   },
-  version: '1.1.2'
+  version: '1.1.3'
 };
 
 if (typeof window !== 'undefined' && window.Vue) {
